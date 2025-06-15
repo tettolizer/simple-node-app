@@ -7,26 +7,16 @@ pipeline {
     // Environment variables that will be available throughout the pipeline.
     environment {
         // Your Docker Hub username. Replace 'your-dockerhub-username' with your actual username.
-        DOCKERHUB_USERNAME = 'your-dockerhub-username' 
+        DOCKERHUB_USERNAME = 'tettolizer' // IMPORTANT: Replace with your Docker Hub username
         // The name for your Docker image.
         IMAGE_NAME = 'simple-node-app'
     }
 
     stages {
-        // Stage 1: Checkout
-        // This stage checks out the source code from your GitHub repository.
-        stage('Checkout') {
-            steps {
-                // Get some code from a GitHub repository
-                git 'https://github.com/your-github-username/your-repo-name.git'
-                script {
-                    // Print a message to the console
-                    echo "Checked out code from GitHub."
-                }
-            }
-        }
+        // NOTE: The redundant 'Checkout' stage has been removed. 
+        // Jenkins automatically checks out the code from the SCM configuration before the pipeline starts.
 
-        // Stage 2: Build Docker Image
+        // Stage 1: Build Docker Image
         // This stage builds the Docker image using the Dockerfile in your repository.
         stage('Build Docker Image') {
             steps {
@@ -39,7 +29,7 @@ pipeline {
             }
         }
         
-        // Stage 3: Push Docker Image to Docker Hub
+        // Stage 2: Push Docker Image to Docker Hub
         // This stage pushes the built image to Docker Hub.
         stage('Push to Docker Hub') {
             steps {
@@ -59,14 +49,14 @@ pipeline {
             }
         }
 
-        // Stage 4: Clean up
+        // Stage 3: Clean up
         // This stage removes the Docker image from the local Jenkins server to save space.
         stage('Clean up') {
             steps {
                 script {
                     echo "Cleaning up local Docker image..."
                     // Remove the Docker image created during the build.
-                    docker.image("${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${env.BUILD_NUMBER}").image.delete()
+                    sh "docker rmi ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
