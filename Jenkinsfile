@@ -6,16 +6,13 @@ pipeline {
 
     // Environment variables that will be available throughout the pipeline.
     environment {
-        // Your Docker Hub username. Replace 'your-dockerhub-username' with your actual username.
-        DOCKERHUB_USERNAME = 'tettolizer' // IMPORTANT: Replace with your Docker Hub username
+        // Your Docker Hub username.
+        DOCKERHUB_USERNAME = 'tettolizer' 
         // The name for your Docker image.
         IMAGE_NAME = 'simple-node-app'
     }
 
     stages {
-        // NOTE: The redundant 'Checkout' stage has been removed. 
-        // Jenkins automatically checks out the code from the SCM configuration before the pipeline starts.
-
         // Stage 1: Build Docker Image
         // This stage builds the Docker image using the Dockerfile in your repository.
         stage('Build Docker Image') {
@@ -56,6 +53,7 @@ pipeline {
                 script {
                     echo "Cleaning up local Docker image..."
                     // Remove the Docker image created during the build.
+                    // Using 'sh' is often more reliable for cleanup.
                     sh "docker rmi ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
