@@ -54,7 +54,7 @@ pipeline {
                     echo "Cleaning up local Docker image..."
                     // Remove the Docker image created during the build.
                     // Using 'sh' is often more reliable for cleanup.
-                    sh "docker rmi ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    bat "docker rmi ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
