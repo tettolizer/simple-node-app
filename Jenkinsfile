@@ -60,19 +60,5 @@ pipeline {
         }
     }
     
-    // Post-build actions that run after all stages are complete.
-    post {
-        // 'always' will run regardless of the pipeline's success or failure.
-        always {
-            echo 'Pipeline finished.'
-        }
-        // 'success' runs only if the pipeline is successful.
-        success {
-            echo 'Pipeline executed successfully!'
-        }
-        // 'failure' runs only if the pipeline fails.
-        failure {
-            echo 'Pipeline failed.'
-        }
-    }
+
 }
